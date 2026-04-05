@@ -145,7 +145,7 @@ export default function LandingPage() {
           <Container maxWidth="lg">
             <FadeInUp delay={300}>
               <Grid container spacing={3} justifyContent="center" alignItems="stretch">
-                <Grid item xs={12} sm={4} md={4}>
+                <Grid size={{ xs: 12, sm: 4, md: 4 }}>
                   <Card sx={{ height: "100%", borderRadius: 4, bgcolor: "background.paper", boxShadow: "0 10px 30px -10px rgba(0,0,0,0.1)", overflow: "hidden" }}>
                     <Box component="img" src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=1000" alt="Surgeons group in masks"
                       sx={{ width: "100%", height: 300, objectFit: "cover", display: "block", bgcolor: "rgba(0,0,0,0.04)" }} />
@@ -156,9 +156,8 @@ export default function LandingPage() {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item xs={12} sm={4} md={4}>
+                <Grid size={{ xs: 12, sm: 4, md: 4 }}>
                   <Card sx={{ height: "100%", borderRadius: 4, bgcolor: "background.paper", boxShadow: "0 10px 30px -10px rgba(0,0,0,0.1)", overflow: "hidden" }}>
-                    {/* FIXED: Fresh, highly reliable URL for the middle image */}
                     <Box component="img" src="https://images.squarespace-cdn.com/content/v1/56a042fb25981d9326c9bbdb/8189870e-2560-42ee-9d65-75eef9604ad7/Benefits+and+Risks+of+Continuous+Medical+Monitoring.jpg?format=1500w" alt="Doctor consulting patient"
                       sx={{ width: "100%", height: 300, objectFit: "cover", display: "block", bgcolor: "rgba(0,0,0,0.04)" }} />
                     <CardContent sx={{ p: 2, textAlign: "center" }}>
@@ -168,7 +167,7 @@ export default function LandingPage() {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item xs={12} sm={4} md={4}>
+                <Grid size={{ xs: 12, sm: 4, md: 4 }}>
                   <Card sx={{ height: "100%", borderRadius: 4, bgcolor: "background.paper", boxShadow: "0 10px 30px -10px rgba(0,0,0,0.1)", overflow: "hidden" }}>
                     <Box component="img" src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=800" alt="Family on the beach"
                       sx={{ width: "100%", height: 300, objectFit: "cover", display: "block", bgcolor: "rgba(0,0,0,0.04)" }} />
@@ -195,7 +194,7 @@ export default function LandingPage() {
             </FadeInUp>
             
             <Grid container spacing={3} justifyContent="center" alignItems="stretch">
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <FadeInUp delay={100}>
                   <Card sx={{ height: "100%", p: 1, borderTop: "4px solid #0457ab", boxShadow: "0 10px 30px -10px rgba(0,0,0,0.05)" }}>
                     <CardContent sx={{ p: 3, display: "flex", flexDirection: "column", height: "100%" }}>
@@ -208,7 +207,7 @@ export default function LandingPage() {
                   </Card>
                 </FadeInUp>
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <FadeInUp delay={200}>
                   <Card sx={{ height: "100%", p: 1, borderTop: "4px solid #d32f2f", boxShadow: "0 10px 30px -10px rgba(0,0,0,0.05)" }}>
                     <CardContent sx={{ p: 3, display: "flex", flexDirection: "column", height: "100%" }}>
@@ -221,7 +220,7 @@ export default function LandingPage() {
                   </Card>
                 </FadeInUp>
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <FadeInUp delay={300}>
                   <Card sx={{ height: "100%", p: 1, borderTop: "4px solid #43a047", boxShadow: "0 10px 30px -10px rgba(0,0,0,0.05)" }}>
                     <CardContent sx={{ p: 3, display: "flex", flexDirection: "column", height: "100%" }}>
@@ -249,7 +248,7 @@ export default function LandingPage() {
             </FadeInUp>
             
             <Grid container spacing={3} justifyContent="center" alignItems="stretch">
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <FadeInUp delay={100}>
                   <Card sx={{ height: "100%", borderRadius: 4, bgcolor: "background.paper", boxShadow: "0 10px 30px -10px rgba(0,0,0,0.1)", overflow: "hidden" }}>
                     <Box component="img" src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=800" alt="Hospital desk"
@@ -262,7 +261,7 @@ export default function LandingPage() {
                   </Card>
                 </FadeInUp>
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <FadeInUp delay={200}>
                   <Card sx={{ height: "100%", borderRadius: 4, bgcolor: "background.paper", boxShadow: "0 10px 30px -10px rgba(0,0,0,0.1)", overflow: "hidden" }}>
                     <Box component="img" src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=800" alt="Doctor with phone"
@@ -275,7 +274,7 @@ export default function LandingPage() {
                   </Card>
                 </FadeInUp>
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid size={{ xs: 12, md: 4 }}>
                 <FadeInUp delay={300}>
                   <Card sx={{ height: "100%", borderRadius: 4, bgcolor: "background.paper", boxShadow: "0 10px 30px -10px rgba(0,0,0,0.1)", overflow: "hidden" }}>
                     <Box component="img" src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&q=80&w=800" alt="Surgeon hands"
@@ -310,7 +309,7 @@ export default function LandingPage() {
                 { title: "Vision Engine", desc: "Headless Python OpenCV utilizing Hough Circles and HSV Color Masking for dynamic reference-based scaling." },
                 { title: "State Management", desc: "Real-time Web Audio API integration for live acoustic spectrogram visualization." },
               ].map((tech, i) => (
-                <Grid item xs={12} sm={6} key={i}>
+                <Grid size={{ xs: 12, sm: 6 }} key={i}>
                   <FadeInUp delay={i * 100}>
                     <Box sx={{ p: 3, bgcolor: "rgba(255,255,255,0.05)", borderRadius: 3, height: "100%", border: "1px solid rgba(255,255,255,0.1)" }}>
                       <Stack direction="row" spacing={2} alignItems="flex-start">
