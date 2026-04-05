@@ -85,11 +85,6 @@ const theme = createTheme({
   },
 });
 
-const spectrumData = Array.from({ length: 10 }, (_, index) => ({
-  name: `T${index + 1}`,
-  value: Math.round(35 + Math.random() * 50 + (index % 2 ? 12 : -12)),
-}));
-
 export default function ZephyrDashboard() {
   const [selectedView, setSelectedView] = useState<"overview" | "input">("overview");
   const [acceptedFiles, setAcceptedFiles] = useState<File[]>([]);
@@ -98,6 +93,11 @@ export default function ZephyrDashboard() {
   const [audioUrl, setAudioUrl] = useState<string>("");
   const [audioStatus, setAudioStatus] = useState<string>("idle");
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+
+  // ADD THIS: State to hold the real acoustic data
+  const [spectrumData, setSpectrumData] = useState(
+    Array.from({ length: 10 }, (_, index) => ({ name: `T${index + 1}`, value: 0 }))
+  );
 
   const onDrop = useCallback((files: File[]) => {
     setAcceptedFiles(files);
@@ -119,6 +119,46 @@ export default function ZephyrDashboard() {
     ? acceptedFiles[0].name
     : "Drag and drop the Mantoux photo with a 1 Rupee coin here.";
 
+  // ADD THIS FUNCTION: The Real-Time Acoustic Extractor
+  const extractAcousticWaveform = async (blob: Blob) => {
+    try {
+      const arrayBuffer = await blob.arrayBuffer();
+      // Initialize the browser's native audio engine
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+      const rawData = audioBuffer.getChannelData(0); // Get the raw soundwave data
+      
+      // We want to map the soundwave into 10 data points for our T1-T10 chart
+      const chunks = 10;
+      const chunkSize = Math.floor(rawData.length / chunks);
+      const realAcousticData = [];
+
+      for (let i = 0; i < chunks; i++) {
+        let maxPeak = 0;
+        const start = i * chunkSize;
+        const end = start + chunkSize;
+        
+        // Find the loudest sound spike in this fraction of a second
+        for (let j = start; j < end; j++) {
+          if (Math.abs(rawData[j]) > maxPeak) {
+            maxPeak = Math.abs(rawData[j]);
+          }
+        }
+        
+        // Normalize the peak to a 0-100 scale for the UI chart
+        realAcousticData.push({
+          name: `T${i + 1}`,
+          value: Math.round(maxPeak * 100)
+        });
+      }
+      
+      // Update the chart!
+      setSpectrumData(realAcousticData);
+    } catch (err) {
+      console.error("Failed to extract acoustic waveform:", err);
+    }
+  };
+
   const runZephyrAnalysis = async () => {
     setLoading(true);
     setResults(null);
@@ -127,6 +167,9 @@ export default function ZephyrDashboard() {
       if (!audioBlob) {
         throw new Error("No audio recording available");
       }
+
+      // ADD THIS LINE: Generate the real graph data instantly!
+      await extractAcousticWaveform(audioBlob);
 
       // 1. Prepare the FormData for the API
       const formData = new FormData();
@@ -274,7 +317,7 @@ export default function ZephyrDashboard() {
                 <PersonIcon />
               </Avatar>
               <Box>
-                <Typography>Dr. Mira Patel</Typography>
+                <Typography>Dr. Shreyansh Kushwaha</Typography>
                 <Typography variant="body2" color="rgba(255,255,255,0.72)">
                   triage@zephyr.ai
                 </Typography>
