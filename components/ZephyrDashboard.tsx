@@ -77,14 +77,12 @@ interface AnalysisResults {
   recommendation: string;
 }
 
-// 1. HARDCODED LONGITUDINAL DATA
 const patientHistoryData = [
   { visit: "Visit 1 (Jan)", date: "Jan 12", risk: 80, reaction: "15.2mm", phase: "Initial Screening" },
   { visit: "Visit 2 (Feb)", date: "Feb 14", risk: 45, reaction: "10.1mm", phase: "Month 1 Follow-up" },
   { visit: "Visit 3 (Mar)", date: "Mar 20", risk: 12, reaction: "4.5mm", phase: "Month 2 Follow-up" },
 ];
 
-// 2. TRANSLATION DICTIONARY
 const translations = {
   en: {
     dashboard: "Dashboard",
@@ -146,8 +144,10 @@ const translations = {
   }
 };
 
+type ViewType = "overview" | "input" | "guidelines" | "history";
+
 export default function ZephyrDashboard() {
-  const [selectedView, setSelectedView] = useState<"overview" | "input" | "guidelines" | "history">("overview");
+  const [selectedView, setSelectedView] = useState<ViewType>("overview");
   const [acceptedFiles, setAcceptedFiles] = useState<File[]>([]);
   const [results, setResults] = useState<AnalysisResults | null>(null);
   const [loading, setLoading] = useState(false);
@@ -156,13 +156,11 @@ export default function ZephyrDashboard() {
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   
-  // Language and Theme States
   const [lang, setLang] = useState<"en" | "hi">("en");
   const [mode, setMode] = useState<"light" | "dark">("light");
   
   const t = (key: keyof typeof translations.en) => translations[lang][key];
 
-  // DYNAMIC THEME
   const theme = useMemo(
     () =>
       createTheme({
@@ -274,7 +272,6 @@ export default function ZephyrDashboard() {
       };
 
       setResults(realResults);
-      // REMOVED: setSelectedView("overview"); so the user stays on the input page
 
     } catch (error) {
       console.error("Analysis failed:", error);
@@ -293,10 +290,16 @@ export default function ZephyrDashboard() {
       const html2pdf = (await import("html2pdf.js")).default;
       const element = document.getElementById("clinical-report");
       if (!element) return;
+
+      // FIXED: Added 'as const' to ensure types match html2pdf expectations
       const opt = {
-        margin: 0.5, filename: `Zephyr_Clinical_Report_${new Date().getTime()}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
+        margin: 0.5,
+        filename: `Zephyr_Clinical_Report_${new Date().getTime()}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' as const }
+      } as const;
+
       await html2pdf().set(opt).from(element).save();
     } catch (error) {
       console.error("Failed to generate PDF:", error);
@@ -343,7 +346,7 @@ export default function ZephyrDashboard() {
               <ListItem key={item.id} disablePadding>
                 <ListItemButton
                   selected={selectedView === item.id}
-                  onClick={() => setSelectedView(item.id as any)}
+                  onClick={() => setSelectedView(item.id as ViewType)}
                   sx={{ color: "#ffffff" }}
                 >
                   <ListItemIcon sx={{ color: "#90caf9" }}>{item.icon}</ListItemIcon>
@@ -373,12 +376,10 @@ export default function ZephyrDashboard() {
                 <Typography variant="h4" fontWeight={700} color="primary" sx={{ mt: 0.5 }}>{t("triageDashboard")}</Typography>
               </Box>
               <Stack direction="row" spacing={2} alignItems="center">
-                {/* DARK MODE TOGGLE */}
                 <IconButton onClick={() => setMode(mode === "light" ? "dark" : "light")} sx={{ color: "text.primary" }}>
                   {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
                 </IconButton>
 
-                {/* LANGUAGE TOGGLE BUTTON */}
                 <Button 
                   variant="text" 
                   color="primary" 
@@ -400,7 +401,6 @@ export default function ZephyrDashboard() {
           </AppBar>
 
           <Box sx={{ mt: 2 }}>
-            {/* OVERVIEW COMPONENT */}
             {selectedView === "overview" && (
               <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 <Box sx={{ display: "grid", gap: 3, gridTemplateColumns: { xs: "1fr", lg: "2fr 1fr" } }}>
@@ -491,7 +491,6 @@ export default function ZephyrDashboard() {
               </Box>
             )}
 
-            {/* PATIENT HISTORY COMPONENT */}
             {selectedView === "history" && (
               <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
                 <Typography variant="h5" color="primary" fontWeight={600}>
@@ -558,7 +557,6 @@ export default function ZephyrDashboard() {
               </Box>
             )}
 
-            {/* INPUT DATA COMPONENT */}
             {selectedView === "input" && (
               <Box sx={{ display: "grid", gap: 3, gridTemplateColumns: { xs: "1fr", md: "2fr 1fr" } }}>
                 <Box>
@@ -616,7 +614,6 @@ export default function ZephyrDashboard() {
               </Box>
             )}
 
-            {/* GUIDELINES COMPONENT */}
             {selectedView === "guidelines" && (
               <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
                 <Typography variant="h5" color="primary" fontWeight={600}>Clinical Data Capture Guidelines</Typography>
@@ -663,7 +660,6 @@ export default function ZephyrDashboard() {
             )}
           </Box>
 
-          {/* RESULTS COMPONENT (UPDATED RENDER CONDITION) */}
           {(results || loading) && (selectedView === "overview" || selectedView === "input") && (
             <Box sx={{ mt: 4 }}>
               <Card id="clinical-report" sx={{ borderRadius: 3, boxShadow: 3, p: 3, bgcolor: "background.paper" }}>
