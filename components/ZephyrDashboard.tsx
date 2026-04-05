@@ -341,14 +341,23 @@ export default function ZephyrDashboard() {
                   Patient Triage Dashboard
                 </Typography>
               </Box>
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<CloudUploadIcon />}
-                onClick={() => setSelectedView("input")}
-              >
-                Upload + Scan
-              </Button>
+              <Stack direction="row" spacing={2}>
+                <Button
+                  variant="outlined"
+                  onClick={() => window.location.href = "/"}
+                  sx={{ bgcolor: "#ffffff", borderColor: "rgba(0,0,0,0.12)" }}
+                >
+                  Back to Home
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<CloudUploadIcon />}
+                  onClick={() => setSelectedView("input")}
+                >
+                  Upload + Scan
+                </Button>
+              </Stack>
             </Toolbar>
           </AppBar>
 
